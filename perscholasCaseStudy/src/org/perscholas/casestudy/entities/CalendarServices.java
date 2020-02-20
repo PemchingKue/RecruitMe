@@ -89,4 +89,23 @@ public class CalendarServices extends AbstractServices{
 		}
 		
 	}
+	
+	public Boolean deleteData(int eId, int sessionUserId) {
+		
+		em.getTransaction().begin();
+		
+		Query query = em.createQuery("DELETE FROM Calendar c WHERE c.id = :id AND c.recruiter.recruiterId = :userId");
+		int deleteCount = query.setParameter("id", eId).setParameter("userId", sessionUserId).executeUpdate();
+				
+		em.getTransaction().commit();
+		disposeCon();
+		
+		if(deleteCount > 1) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+	}
 }

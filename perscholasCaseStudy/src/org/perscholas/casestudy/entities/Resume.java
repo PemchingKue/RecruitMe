@@ -20,7 +20,7 @@ public class Resume implements Serializable {
 	private String resumeData;
 	
 	@ManyToOne
-	@JoinColumn(name = "candidate")
+	@JoinColumn(name = "candidate_id")
 	private Candidate candidate;
 	
 	private static final long serialVersionUID = 1L;

@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	    	}
 
 	    ],
-	    select: function(start, end, allDay) {
-	      var eventName = prompt("Enter a event name TEST:");
+	    select: function(info) {
+	      var eventName = prompt("Enter a event name:");
 	      if(eventName){
-	    	  var start = info.startStr;
-	    	  var end = info.endStr;
+	    	  var start = calendar.formatIso(info.start);
+	    	  var end = calendar.formatIso(info.end);
 	    	  $.ajax({
 	    		  url: '/perscholasCaseStudy/CreateEventServlet',
 	    		  type: "POST",
@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		  	}
 	    },
 	    eventResize:function(info){
-	    	  var start = info.event.startStr;
-	    	  var end = info.event.endStr;
+	    	  var start = calendar.formatIso(info.event.start);
+	    	  var end = calendar.formatIso(info.event.end);
 	    	  var title = info.event.title;
 	    	  var id = info.event.id;
 	    	  $.ajax({
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			  })
 	    },
 	    eventDrop:function(info){
-	    	  var start = moment(info.event.start);
-	    	  var end = moment(info.event.end);
+	    	  var start = calendar.formatIso(info.event.start);
+	    	  var end = calendar.formatIso(info.event.end);
 	    	  var title = info.event.title;
 	    	  var id = info.event.id;
 	    	  $.ajax({
@@ -69,6 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
 					  alert("updated successfully");
 				  }
 			  })
+	    },
+	    eventClick:function(info){
+	    	if(confirm("Are you sure you want to remove it?")){
+	    		var id = info.event.id;
+		    	  $.ajax({
+		    		  url: '/perscholasCaseStudy/DeleteEventServlet',
+		    		  type: "POST",
+		    		  data:{ id:id },
+					  success:function(){
+						  calendar.refetchEvents()
+						  alert("deleted successfully");
+					  }
+				  })
+	    	}
 	    }
 	    
 	});
