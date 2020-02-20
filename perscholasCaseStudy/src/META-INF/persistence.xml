@@ -7,7 +7,7 @@
 		<class>org.perscholas.casestudy.entities.Candidate</class>
 		<class>org.perscholas.casestudy.entities.Recruiter</class>
 		<class>org.perscholas.casestudy.entities.Client</class>
-		<class>org.perscholas.casestudy.entities.Schedule</class>
+		<class>org.perscholas.casestudy.entities.Calendar</class>
 		<class>org.perscholas.casestudy.entities.Resume</class>
 
 		<properties>

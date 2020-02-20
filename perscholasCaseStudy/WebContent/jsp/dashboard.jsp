@@ -30,11 +30,14 @@
   <link href="${root}/vendor/fullcalendar/packages/bootstrap/main.css" rel="stylesheet" />
   <link href="${root}/vendor/fullcalendar/packages/timegrid/main.css" rel="stylesheet" />
 
+  
   <script src="${root}/vendor/fullcalendar/packages/core/main.js"></script>
+  <script src='${root}/vendor/fullcalendar/packages/moment/main.js'></script>
   <script src="${root}/vendor/fullcalendar/packages/daygrid/main.js"></script>
   <script src="${root}/vendor/fullcalendar/packages/bootstrap/main.js"></script>
   <script src="${root}/vendor/fullcalendar/packages/timegrid/main.js"></script>
   <script src='${root}/vendor/fullcalendar/packages/interaction/main.js'></script>
+  
 
   <!-- POSTITALL CSS AND JS -->
   <link rel="stylesheet" href="${root}/vendor/postitall/jquery.postitall.css">
@@ -97,7 +100,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div id="calendar" style="color: #858796"></div>
+                  <div id="dashboardCalendar" style="color: #858796"></div>
                 </div>
               </div>
             </div>
@@ -126,6 +129,6 @@
 <!-- Javascript for NOTES and CALENDAR -->
 <script src="${root}/js/postitall.js"></script>
 <script src="${root}/js/notes.js"></script>
-<script src="${root}/js/calendar.js"></script>
+<script src="${root}/js/dashboardcalendar.js"></script>
 
 </html>

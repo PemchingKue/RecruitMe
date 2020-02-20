@@ -66,6 +66,7 @@ public class CandidateServices extends AbstractServices{
 		if(updateCount > 0) {
 			return arr;
 		}else {
+			//return null, then catch, if update data != null, then do something, if null then throw popup modal, replace sys.out with a logging statement
 			System.out.println("update failed");
 			return arr;
 		}

@@ -36,6 +36,7 @@ public class Candidate implements Serializable {
 	@JoinColumn(name = "recruiter_id")
 	private Recruiter recruiter;
 	
+	//Many to Many
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
