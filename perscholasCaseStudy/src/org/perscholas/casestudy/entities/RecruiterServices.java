@@ -57,4 +57,77 @@ public class RecruiterServices extends AbstractServices{
 		return true;
 
 	}
+	
+	public Boolean updateData(int userId, String firstName, String lastName, String email) {
+		
+		Query getRecruiter = em.createNamedQuery("getById").setParameter("rid", userId);
+		List<Recruiter> arr = getRecruiter.getResultList();
+		
+		for(Recruiter r : arr) {
+			r.setFirstName(firstName);
+			r.setLastName(lastName);
+			r.setEmail(email);
+		}
+		
+		String newFirstName = null;
+		String newLastName = null;
+		String newEmail = null;
+		
+		em.getTransaction().begin();
+        
+		for(Recruiter r : arr) {
+			newFirstName = r.getFirstName();
+			newLastName = r.getLastName();
+			newEmail = r.getEmail();
+		}
+		
+		Query query = em.createQuery(
+			      "UPDATE Recruiter r SET r.firstName = :firstName, r.lastName = :lastName, r.email = :email WHERE r.recruiterId = :id");
+		
+		int updateCount = query.setParameter("id", userId)
+				.setParameter("firstName", newFirstName)
+				.setParameter("lastName", newLastName)
+				.setParameter("email", newEmail).executeUpdate();
+		
+		em.getTransaction().commit();
+		
+		disposeCon();
+		
+		if(updateCount > 0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	
+	public Boolean updatePassword(int userId, String oldPassword, String newPassword) {
+		
+		Query getRecruiter = em.createNamedQuery("getById").setParameter("rid", userId);
+		List<Recruiter> arr = getRecruiter.getResultList();		
+		
+		if(arr.get(0).getPassword().equals(oldPassword)) {
+			em.getTransaction().begin();
+			Query query = em.createQuery(
+				      "UPDATE Recruiter r SET r.password = :password WHERE r.recruiterId = :id");
+			
+			int updateCount = query.setParameter("id", userId)
+					.setParameter("password", newPassword).executeUpdate();
+			
+			em.getTransaction().commit();
+			
+			if(updateCount > 0) {
+				System.out.println("success on changing password");
+				return true;
+			}else {
+				System.out.println("failed on changing password");
+				return false;
+			}
+			
+		}else {
+			System.out.println("password does not match!");
+			return false;
+		}
+	
+	}
 }

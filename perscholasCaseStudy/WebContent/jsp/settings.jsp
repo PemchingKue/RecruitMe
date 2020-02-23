@@ -65,29 +65,29 @@
                 <div class="row">
                     <!-- left form column -->
                     <div class="col-md-6 col-sm-6 col-xs-12 personal-info">
-                      <form class="form-horizontal"  role="form">
+                      <form class="form-horizontal" action="${root}/UpdateUserServlet" method="POST">
                         <div class="form-group">
                           <label class="col-lg-3 control-label">First name:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" value="Pemching" type="text">
+                            <input class="form-control" style="text-transform: capitalize" value="${sessionScope.firstName }" type="text" name="firstName">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-lg-3 control-label">Last name:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" value="Kue" type="text">
+                            <input class="form-control" style="text-transform: capitalize" value="${sessionScope.lastName }" type="text" name="lastName">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-lg-3 control-label">Email:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" value="kwmpk12@gmail.com" type="text">
+                            <input class="form-control" value="${sessionScope.email }" type="text" name="email">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-md-3 control-label"></label>
                           <div class="col-md-8">
-                            <input class="btn btn-primary" value="Save Changes" type="button">
+                            <input class="btn btn-primary" value="Save Changes" type="Submit">
                             <span></span>
                             <input class="btn btn-primary" value="Cancel" type="reset">
                           </div>
@@ -97,29 +97,29 @@
 
                     <!-- right form column -->
                     <div class="col-md-6 col-sm-6 col-xs-12 personal-info">
-                      <form class="form-horizontal"  role="form">
+                      <form class="form-horizontal" role="form" action="${root}/ChangePasswordServlet" method="POST">
                         <div class="form-group">
                           <label class="col-md-4 control-label">Old Password:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" value="11111122333" type="password">
+                            <input class="form-control" type="password" name="oldpassword">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-md-4 control-label">New Password:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" value="11111122333" type="password">
+                            <input class="form-control" type="password" name="newpassword">
                           </div>
                         </div>
 						<div class="form-group">
                           <label class="col-md-4 control-label">Confirm New Password:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" value="11111122333" type="password">
+                            <input class="form-control" type="password" name="cnewpassword">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-md-4 control-label"></label>
                           <div class="col-md-8">
-                            <input class="btn btn-primary" value="Save Changes" type="button">
+                            <input class="btn btn-primary" value="Save Changes" type="Submit">
                             <span></span>
                             <input class="btn btn-primary" value="Cancel" type="reset">
                           </div>
