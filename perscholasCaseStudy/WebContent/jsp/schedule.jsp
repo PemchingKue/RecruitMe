@@ -70,7 +70,7 @@
           <!-- Page Heading -->
           <div class="card shadow mb-4">
             <div class="card-body">
-              <div id="calendar" style="color: #858796"></div>
+              <div id="scheduleCalendar" style="color: #858796"></div>
             </div>
           </div>
           
@@ -97,6 +97,6 @@
 
 <!-- Javascript for NOTES and CALENDAR -->
 <script src="${root}/js/postitall.js"></script>
-<script src="${root}/js/calendar.js"></script>
+<script src="${root}/js/schedulecalendar.js"></script>
 
 </html>

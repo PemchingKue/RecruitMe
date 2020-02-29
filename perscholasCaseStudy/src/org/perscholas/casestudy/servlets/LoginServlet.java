@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         RecruiterServices rs = new RecruiterServices();
         
         List<Recruiter> recruiter = rs.fetchRecruiterByEmail(email);
-        		
+        
         if(!recruiter.isEmpty()) { 
         	
 			if ( email.equals(recruiter.get(0).getEmail()) && password.equals(recruiter.get(0).getPassword())) {

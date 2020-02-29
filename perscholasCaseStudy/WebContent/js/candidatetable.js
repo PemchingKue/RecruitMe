@@ -4,7 +4,6 @@ $(document).ready( function () {
 	var editor = new $.fn.dataTable.Editor( {
 		ajax: {
 	        create: {
-//	            type: 'POST',
 	            url: '/perscholasCaseStudy/CreateCandidateServlet'
 	        },
 	        edit: {
@@ -12,7 +11,6 @@ $(document).ready( function () {
 	            url: '/perscholasCaseStudy/UpdateCandidateServlet'
 	        },
 	        remove: {
-//	            type: 'DELETE',
 	            url: '/perscholasCaseStudy/DeleteCandidateServlet'
 	        }
 	    },
@@ -22,8 +20,24 @@ $(document).ready( function () {
 	    fields: [
 	        { label: 'First Name', name: 'firstName' },
 	        { label: 'Last Name',  name: 'lastName'  },
+	        { label: 'Company',  name: 'client.clientName'  },
+	        { label: 'Position',  name: 'client.position'  },
 	        { label: 'Email',  name: 'email'  },
 	        { label: 'Phone',  name: 'phone'  },
+	        {
+                label: "Resume",
+                name: "resume.resumeId",
+                type: "upload",
+                ajax: {
+                	type: 'POST',
+                	url: "/perscholasCaseStudy/UploadResumeServlet"
+                },
+                display: function ( id ) {
+//                	return '<a href="functions/document_get.php?id='+data+'">Download</a>';
+                    return editor.file('resume', id).fileName;
+                },
+                clearText: "Remove File"
+            }
 	    ]
 	} );
 	
@@ -62,15 +76,38 @@ $('#candidateTable').DataTable({
 			"dataSrc": "data",
 			"type" : "GET"
 			},
+		dataFilter: function(files){
+			var obj = JSON.parse(files);
+			console.log(JSON.stringify(obj));
+			
+			return obj;
+		},
+	    columnDefs: [
+	        { 	
+	        	className: "titleCase",
+	        	targets: [0, 1, 2]
+	        }
+	    ],
 		columns: [
             { "data": null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                 return data.firstName + ' ' + data.lastName;
             } },
+            { "data": "client.clientName" },
+            { "data": "client.position" },
             { "data": "email" },
             { "data": "phone" },
             {
-                className: "center",
+                "data": "resume.resumeId",
+                render: function ( id ) {
+                	
+                    return id ?
+                            '<a href="/perscholasCaseStudy/DownloadResumeServlet?id='+id+'">'+editor.file( 'resume', id ).fileName +'</a>' :
+                            null;
+                },
+                defaultContent: "No Resume"
+            },
+            {
                 defaultContent: '<a href="" class="editor_edit">Edit</a> / <a href="" class="editor_remove">Delete</a>'
             }
         ],

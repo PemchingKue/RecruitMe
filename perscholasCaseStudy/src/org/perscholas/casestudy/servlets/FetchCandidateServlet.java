@@ -13,10 +13,13 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.perscholas.casestudy.entities.Candidate;
 import org.perscholas.casestudy.entities.CandidateServices;
+import org.perscholas.casestudy.entities.Resume;
+import org.perscholas.casestudy.entities.ResumeServices;
 
 /**
  * Servlet implementation class FetchCandidateServlet
@@ -74,6 +77,8 @@ public class FetchCandidateServlet extends HttpServlet {
 			for (Candidate c : candidate) {
 				if (c.getFirstName().toLowerCase().contains(search.toLowerCase())
 						|| c.getLastName().toLowerCase().contains(search.toLowerCase())
+						|| c.getClient().getClientName().toLowerCase().contains(search.toLowerCase())
+						|| c.getClient().getPosition().toLowerCase().contains(search.toLowerCase())
 						|| c.getEmail().toLowerCase().contains(search.toLowerCase())
 						|| c.getPhone().toLowerCase().contains(search.toLowerCase())) 
 				{
@@ -95,8 +100,12 @@ public class FetchCandidateServlet extends HttpServlet {
 		        case 1:
 		            return c1.getLastName().compareTo(c2.getLastName()) * sortDirection;
 		        case 2:
-		            return c1.getEmail().compareTo(c2.getEmail()) * sortDirection;
+		            return c1.getClient().getClientName().compareTo(c2.getClient().getClientName()) * sortDirection;
 		        case 3:
+		            return c1.getClient().getPosition().compareTo(c2.getClient().getPosition()) * sortDirection;
+		        case 4:
+		            return c1.getEmail().compareTo(c2.getEmail()) * sortDirection;
+		        case 5:
 		            return c1.getPhone().compareTo(c2.getPhone()) * sortDirection;
 		        }
 		        return 0;
@@ -114,6 +123,21 @@ public class FetchCandidateServlet extends HttpServlet {
 		Gson gson = new Gson();
 		JsonObject jsonObj = new JsonObject();
 		
+		ResumeServices rs = new ResumeServices();
+		
+		List<Resume> rList = rs.getAllResumes();
+		JsonObject fileJsonObj = new JsonObject();
+		JsonObject fileJsonObj2 = new JsonObject();
+		
+		for(Resume r : rList) {
+			String id = Integer.toString(r.getResumeId());
+			JsonElement test2 = gson.toJsonTree(r);
+			fileJsonObj2.add(id, test2);
+		}
+		
+		fileJsonObj.add("resume", fileJsonObj2);
+		
+		
 		// add properties that need to be sent back to datatables
 		jsonObj.addProperty("draw", draw);
 		jsonObj.addProperty("recordsTotal", recordsTotal);
@@ -122,6 +146,7 @@ public class FetchCandidateServlet extends HttpServlet {
 		// convert arraylist to json array
 		JsonArray jsonArray = gson.toJsonTree(data).getAsJsonArray();
 		jsonObj.add("data", jsonArray);
+		jsonObj.add("files", fileJsonObj);
 
 		out.println(jsonObj.toString());
 		

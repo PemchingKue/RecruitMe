@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -30,7 +31,6 @@ public class UpdateCandidateServlet extends HttpServlet {
      */
     public UpdateCandidateServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -38,27 +38,32 @@ public class UpdateCandidateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		HttpSession session = request.getSession();
+		int sessionUserId = (int) session.getAttribute("id");
+		
 		PrintWriter out = response.getWriter();
 		
 		// Retrieve arguments sent from ajax request
 		int cId = Integer.parseInt(request.getParameter("id"));
-		String firstName = request.getParameter("data[firstName]");
-		String lastName = request.getParameter("data[lastName]");
+		String firstName = request.getParameter("data[firstName]").toLowerCase();
+		String lastName = request.getParameter("data[lastName]").toLowerCase();
+		String company = request.getParameter("data[client][clientName]").toLowerCase();
+		String position = request.getParameter("data[client][position]").toLowerCase();
 		String email = request.getParameter("data[email]");
 		String phone = request.getParameter("data[phone]");
+		Integer resumeId = null;
+		//check if resumeId empty or not
+		if(request.getParameter("data[resume][resumeId]").compareTo("") == 0) {
+			resumeId = null;
+		}else {
+			resumeId = Integer.parseInt(request.getParameter("data[resume][resumeId]"));
+		}
 		
 		// retreive all data from database then store in List
 		CandidateServices cs = new CandidateServices();
-		List<Candidate> candidate = cs.fetchDataById(cId);
-		
-		for(Candidate c : candidate) {
-			c.setFirstName(firstName);
-			c.setLastName(lastName);
-			c.setEmail(email);
-			c.setPhone(phone);
-		}
+
 		List<Candidate> data = new ArrayList<Candidate>();
-		data = cs.updateData(candidate);
+		data = cs.updateData(cId, firstName, lastName, company, position, email, phone, sessionUserId, resumeId);
 
 		
 		Gson gson = new Gson();

@@ -69,8 +69,11 @@
 					<thead>
 						<tr>
 							<th>Name</th>
+							<th>Company</th>
+							<th>Position</th>
 							<th>Email</th>
 							<th>Phone</th>
+							<th>Resume</th>
 							<th>Edit / Delete </th>
 						</tr>
 					</thead>

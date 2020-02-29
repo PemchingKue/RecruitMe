@@ -33,7 +33,6 @@ public class CreateClientServlet extends HttpServlet {
      */
     public CreateClientServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -47,8 +46,8 @@ public class CreateClientServlet extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		
-		String clientName = request.getParameter("data[clientName]");
-		String position = request.getParameter("data[position]");
+		String clientName = request.getParameter("data[clientName]").toLowerCase();
+		String position = request.getParameter("data[position]").toLowerCase();
 		
 		ClientServices cs = new ClientServices();
 		

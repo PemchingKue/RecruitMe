@@ -36,20 +36,34 @@ public class Candidate implements Serializable {
 	@JoinColumn(name = "recruiter_id")
 	private Recruiter recruiter;
 	
-	//Many to Many
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
 	
+	@ManyToOne
+	@JoinColumn(name = "resume_id")
+	private Resume resume;
+	
 	private static final long serialVersionUID = 1L;
 
-	public Candidate(String firstName, String lastName, String email, String phone, Recruiter recruiter) {
+	public Candidate(String firstName, String lastName, String email, String phone, Recruiter recruiter, Client client, Resume resume) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setEmail(email);
 		this.setPhone(phone);
 		this.setRecruiter(recruiter);
-//		this.setClient(client);
+		this.setClient(client);
+		this.setResume(resume);
+	}
+	
+	//Third constructor to handle client that doesn't have a resume
+	public Candidate(String firstName, String lastName, String email, String phone, Recruiter recruiter, Client client) {
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setEmail(email);
+		this.setPhone(phone);
+		this.setRecruiter(recruiter);
+		this.setClient(client);
 	}
 	
 	public Candidate() {
@@ -152,6 +166,20 @@ public class Candidate implements Serializable {
 	 */
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	/**
+	 * @return the resume
+	 */
+	public Resume getResume() {
+		return resume;
+	}
+
+	/**
+	 * @param resume the resume to set
+	 */
+	public void setResume(Resume resume) {
+		this.resume = resume;
 	}
    
 }

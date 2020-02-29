@@ -53,16 +53,6 @@ img {
     border-style: none;
 }
 
-input[type="file"] {
-    display: none;
-}
-.custom-file-upload {
-    color: #fff;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
-
 /* notes */
 .notes {
     height: 200px;
@@ -950,4 +940,8 @@ footer.sticky-footer {
 footer.sticky-footer .copyright {
     line-height: 1;
     font-size: 0.8rem;
+}
+
+.titleCase{
+	text-transform: capitalize;
 }

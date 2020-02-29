@@ -1,6 +1,8 @@
 package org.perscholas.casestudy.entities;
 
 import java.io.Serializable;
+import java.sql.Blob;
+
 import javax.persistence.*;
 
 /**
@@ -9,6 +11,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "resume")
+@NamedQueries({
+	@NamedQuery(query = "SELECT r FROM Resume r WHERE r.resumeId = :rId", name = "getResumeById"),
+	@NamedQuery(query = "SELECT r FROM Resume r", name = "getAllResumes"),
+	@NamedQuery(query = "DELETE FROM Resume r WHERE r.resumeId = :rId", name = "deleteResumeById")
+}) 
 public class Resume implements Serializable {
 
 	@Id
@@ -16,18 +23,27 @@ public class Resume implements Serializable {
 	@Column(name = "resume_id")
 	private int resumeId;
 	
+	@Column(name = "file_name")
+	private String fileName;
+
+	@Lob
 	@Column(name = "resume_data")
-	private String resumeData;
+	private byte[] resumeData;
 	
-	@ManyToOne
-	@JoinColumn(name = "candidate_id")
-	private Candidate candidate;
+	@Column(name = "file_size")
+	private long fileSize;
+	
+	@Column(name = "content_type")
+	private String contentType;
 	
 	private static final long serialVersionUID = 1L;
 
-	public Resume(String resumeData, Candidate candidate) {
+	public Resume(String fileName, byte[] resumeData, long fileSize, String contentType) {
+		this.setFileName(fileName);
 		this.setResumeData(resumeData);
-		this.setCandidate(candidate);
+		this.setFileSize(fileSize);
+		this.setContentType(contentType);
+
 	}
 	
 	public Resume() {
@@ -48,32 +64,54 @@ public class Resume implements Serializable {
 		this.resumeId = resumeId;
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
 	/**
 	 * @return the resumeData
 	 */
-	public String getResumeData() {
+	public byte[] getResumeData() {
 		return resumeData;
 	}
 
 	/**
 	 * @param resumeData the resumeData to set
 	 */
-	public void setResumeData(String resumeData) {
+	public void setResumeData(byte[] resumeData) {
 		this.resumeData = resumeData;
 	}
 
 	/**
-	 * @return the candidate
+	 * @return the fileSize
 	 */
-	public Candidate getCandidate() {
-		return candidate;
+	public long getFileSize() {
+		return fileSize;
 	}
 
 	/**
-	 * @param candidate the candidate to set
+	 * @param fileSize the fileSize to set
 	 */
-	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
+	public void setFileSize(long fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
    
 }

@@ -6,7 +6,7 @@ called fullcalendar.io
 
 document.addEventListener('DOMContentLoaded', function() {
 	
-	  var calendarEl = document.getElementById('dashboardCalendar');
+	  var calendarEl = document.getElementById('scheduleCalendar');
 	
 	  var calendar = new FullCalendar.Calendar(calendarEl, {
 	    plugins: [ 'timeGrid', 'dayGrid', 'interaction', 'bootstrap', 'moment' ],

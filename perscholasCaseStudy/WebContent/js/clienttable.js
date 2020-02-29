@@ -60,6 +60,12 @@ $('#clientTable').DataTable({
 			"dataSrc": "data",
 			"type" : "GET"
 			},
+	    columnDefs: [
+	        { 	
+	        	className: "titleCase",
+	        	targets: [0, 1]
+	        }
+	    ],
 		columns: [
 			{ "data": "clientName" },
             { "data": "position" },

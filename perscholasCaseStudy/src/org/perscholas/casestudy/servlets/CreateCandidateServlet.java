@@ -44,15 +44,25 @@ public class CreateCandidateServlet extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		
-		String firstName = request.getParameter("data[firstName]");
-		String lastName = request.getParameter("data[lastName]");
+		String firstName = request.getParameter("data[firstName]").toLowerCase();
+		String lastName = request.getParameter("data[lastName]").toLowerCase();
+		String company = request.getParameter("data[client][clientName]").toLowerCase();
+		String position = request.getParameter("data[client][position]").toLowerCase();
 		String email = request.getParameter("data[email]");
 		String phone = request.getParameter("data[phone]");
+		Integer resumeId = null;
+		//check if resumeId empty or not
+		if(request.getParameter("data[resume][resumeId]").compareTo("") == 0) {
+			resumeId = null;
+		}else {
+			resumeId = Integer.parseInt(request.getParameter("data[resume][resumeId]"));
+		}
+		
 		
 		CandidateServices cs = new CandidateServices();
 		
 		List<Candidate> data = new ArrayList<Candidate>();
-		data.addAll(cs.createData(firstName, lastName, email, phone, sessionUserId));
+		data.addAll(cs.createData(firstName, lastName, email, phone, sessionUserId, company, position, resumeId));
 
 		Gson gson = new Gson();
 		JsonObject jsonObj = new JsonObject();
@@ -68,7 +78,7 @@ public class CreateCandidateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		doGet(request, response);
 	}
 

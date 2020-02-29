@@ -42,8 +42,8 @@ public class UpdateClientServlet extends HttpServlet {
 		
 		// Retrieve arguments sent from ajax request
 		int cId = Integer.parseInt(request.getParameter("id"));
-		String clientName = request.getParameter("data[clientName]");
-		String position = request.getParameter("data[position]");
+		String clientName = request.getParameter("data[clientName]").toLowerCase();
+		String position = request.getParameter("data[position]").toLowerCase();
 
 		
 		// retreive all data from database then store in List
