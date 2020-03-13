@@ -1,3 +1,9 @@
+/*
+* Filename: LogoutServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -7,11 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.perscholas.casestudy.interfaces.JspPages;
+
 /**
  * Servlet implementation class LogoutServlet
  */
 @WebServlet("/LogoutServlet")
-public class LogoutServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet implements JspPages{
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -33,8 +41,9 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
+		// kill session, the return user to login page
 		request.getSession().invalidate();
-        response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+        response.sendRedirect(request.getContextPath() + LOGIN);
         
 	}
 

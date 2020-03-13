@@ -1,3 +1,9 @@
+/*
+* Filename: FetchCalendarServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -40,21 +46,24 @@ public class FetchCalendarServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//Get session, and user ID
+		// Get session, and user ID
 		HttpSession session = request.getSession();
 		int sessionUserId = (int) session.getAttribute("id");
 		
 		PrintWriter out = response.getWriter();
 		
 		CalendarServices cs = new CalendarServices();
+		
+		// fetch all events under recruiter user ID
 		List<Calendar> calendar = cs.fetchData(sessionUserId);
-			
+		
+		// add all elements from calendar array list into new array list
 		List<Calendar> data = new ArrayList<Calendar>();
 		data.addAll(calendar);
 		
 		Gson gson = new Gson();
 		
-		// convert arraylist to json array
+		// convert array list to json array
 		JsonArray jsonArray = gson.toJsonTree(data).getAsJsonArray();
 		
 		out.println(jsonArray);

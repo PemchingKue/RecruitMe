@@ -1,9 +1,13 @@
+/*
+* Filename: CreateEventServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.perscholas.casestudy.entities.Calendar;
 import org.perscholas.casestudy.entities.CalendarServices;
-import org.perscholas.casestudy.entities.Candidate;
-import org.perscholas.casestudy.entities.CandidateServices;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.perscholas.casestudy.logger.RecruitMeLogger;
 
 /**
  * Servlet implementation class CreateEventServlet
@@ -33,7 +31,6 @@ public class CreateEventServlet extends HttpServlet {
      */
     public CreateEventServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -41,13 +38,14 @@ public class CreateEventServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//Get session, and user ID
+		// logger
+		RecruitMeLogger rmLog = new RecruitMeLogger();
+
+		// Get session, and user ID
 		HttpSession session = request.getSession();
 		int sessionUserId = (int) session.getAttribute("id");
-		
-		PrintWriter out = response.getWriter();
-		
-//		int id = Integer.parseInt(request.getParameter("id"));
+			
+		// get parameters sent from plugin and store in variables
 		String title = request.getParameter("title");
 		String start = request.getParameter("start");
 		String end = request.getParameter("end");
@@ -55,12 +53,13 @@ public class CreateEventServlet extends HttpServlet {
 		
 		CalendarServices cs = new CalendarServices();
 		
+		// invoke createData method from service class
 		successful = cs.createData(title, start, end, sessionUserId);
 
 		if(successful) {
-			System.out.println("success!");
+			rmLog.logger.log(Level.INFO, "Success on creating event");
 		}else {
-			System.out.println("failed!");
+			rmLog.logger.log(Level.WARNING, "Failed on creating event");
 		}
 		
 	}

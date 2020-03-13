@@ -1,8 +1,15 @@
+/*
+* Filename: RegistrationServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.logging.Level;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,12 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.perscholas.casestudy.entities.RecruiterServices;
+import org.perscholas.casestudy.interfaces.JspPages;
+import org.perscholas.casestudy.logger.RecruitMeLogger;
 
 /**
  * Servlet implementation class RegistrationServlet
  */
 @WebServlet("/RegistrationServlet")
-public class RegistrationServlet extends HttpServlet {
+public class RegistrationServlet extends HttpServlet implements JspPages{
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -23,7 +32,6 @@ public class RegistrationServlet extends HttpServlet {
      */
     public RegistrationServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -31,31 +39,40 @@ public class RegistrationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		PrintWriter out = response.getWriter();
+		// logger
+		RecruitMeLogger rmLog = new RecruitMeLogger();
 		
+		// store parameters sent from form into variables
         String email = request.getParameter("email").toLowerCase();  
         String password = request.getParameter("password");
 		String firstName = request.getParameter("firstname").toLowerCase();
 		String lastName = request.getParameter("lastname").toLowerCase();
 		Boolean checkEmailExist = null;
-		Boolean compRegister = null;
+		Boolean completeRegister = null;
 		
 		RecruiterServices rs = new RecruiterServices();
 		
+		// invoke checkEmail method
 		checkEmailExist = rs.checkEmail(email);
 		
+		// check if the email exist
 		if(checkEmailExist == false) {
 			
-			compRegister = rs.addRecruiter(email, password, firstName, lastName);
+			completeRegister = rs.addRecruiter(email, password, firstName, lastName);
 			
-			if (compRegister) {
-				response.sendRedirect("/perscholasCaseStudy/jsp/login.jsp");
+			if (completeRegister) {
+				response.sendRedirect(request.getContextPath() + LOGIN);
 			}else {
-				out.println("Failed to insert object to database");
+				rmLog.logger.log(Level.WARNING, "Failed to register user");
 			}
 			
 		}else {
-			out.println("User email already exists!");
+			rmLog.logger.log(Level.WARNING, "Email already exists");
+			String emailExist = "Email already exists!";
+			RequestDispatcher rd = request.getRequestDispatcher(REGISTER);
+			request.setAttribute("error", emailExist);
+			
+			rd.forward(request, response);
 		}
 
 	}

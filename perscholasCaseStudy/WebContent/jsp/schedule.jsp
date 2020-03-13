@@ -1,3 +1,9 @@
+<!--
+* Filename: schedule.jsp
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+-->
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
     
@@ -31,6 +37,7 @@
   <link href="${root}/vendor/fullcalendar/packages/timegrid/main.css" rel="stylesheet" />
 
   <script src="${root}/vendor/fullcalendar/packages/core/main.js"></script>
+  <script src='${root}/vendor/fullcalendar/packages/moment/main.js'></script>
   <script src="${root}/vendor/fullcalendar/packages/daygrid/main.js"></script>
   <script src="${root}/vendor/fullcalendar/packages/bootstrap/main.js"></script>
   <script src="${root}/vendor/fullcalendar/packages/timegrid/main.js"></script>
@@ -90,8 +97,12 @@
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Logout Modal-->
+  <!-- Modals -->
   <%@include file = "../html/modals/logoutmodal.jsp" %>
+  <%@include file = "../html/modals/calendarmodal.jsp" %>
+  <%@include file = "../html/modals/createmodal.jsp" %>
+  <%@include file = "../html/modals/updatemodal.jsp" %>
+  <%@include file = "../html/modals/deletemodal.jsp" %>
   
 </body>
 

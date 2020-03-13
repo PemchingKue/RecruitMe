@@ -1,3 +1,9 @@
+<!--
+* Filename: footer.jsp
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+-->
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 
@@ -10,6 +16,7 @@
 		<div class="copyright text-center my-auto">
 			<span>Copyright &copy; RECRUITME 2020</span>
 		</div>
+		
 	</div>
 </footer>
 <!-- End of Footer -->

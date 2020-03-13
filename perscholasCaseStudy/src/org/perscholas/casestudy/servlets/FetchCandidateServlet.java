@@ -1,3 +1,9 @@
+/*
+* Filename: FetchCandidateServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -40,7 +46,7 @@ public class FetchCandidateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//Get session, and user ID
+		// Get session, and user ID
 		HttpSession session = request.getSession();
 		int sessionUserId = (int) session.getAttribute("id");
 		
@@ -54,10 +60,6 @@ public class FetchCandidateServlet extends HttpServlet {
 		final int sortColumnIndex = Integer.parseInt(request.getParameter("order[0][column]"));
 		final int sortDirection = request.getParameter("order[0][dir]").equals("asc") ? -1 : 1;
 		
-		
-		//
-		System.out.println("THIS IS THE SESSION ID " + sessionUserId);
-
 		// define response attributes that need to be sent back with json array
 		int recordsTotal = 0;
 		int recordsFiltered = 0;
@@ -67,10 +69,10 @@ public class FetchCandidateServlet extends HttpServlet {
 		List<Candidate> candidate = cs.fetchData(sessionUserId);
 		recordsTotal = candidate.size();
 
-//		// Create new arraylist to store data after filtering
+		// Create new array list to store data after filtering
 		List<Candidate> data = new ArrayList<Candidate>();
 
-		// Filtering
+		// Filtering implementation
 		if(search == null) {
 			data.addAll(candidate);
 		}else {
@@ -90,7 +92,7 @@ public class FetchCandidateServlet extends HttpServlet {
 		// store filtered data count to recordsFiltered that needs to be sent back with json array
 		recordsFiltered = data.size();
 		
-		//Sorting
+		//Sorting implementation
 		Collections.sort(data, new Comparator<Candidate>(){
 		    @Override
 		    public int compare(Candidate c1, Candidate c2) {    
@@ -112,7 +114,7 @@ public class FetchCandidateServlet extends HttpServlet {
 		    }
 		});
 		
-		// Pagination
+		// Pagination implementation
 		if(data.size() < start + length) {
 			data = data.subList(start, data.size());
 		}else {
@@ -125,10 +127,12 @@ public class FetchCandidateServlet extends HttpServlet {
 		
 		ResumeServices rs = new ResumeServices();
 		
+		// get all resumes from database
 		List<Resume> rList = rs.getAllResumes();
 		JsonObject fileJsonObj = new JsonObject();
 		JsonObject fileJsonObj2 = new JsonObject();
 		
+		// get resume IDs, and format json for plugin purposes
 		for(Resume r : rList) {
 			String id = Integer.toString(r.getResumeId());
 			JsonElement test2 = gson.toJsonTree(r);
@@ -136,7 +140,6 @@ public class FetchCandidateServlet extends HttpServlet {
 		}
 		
 		fileJsonObj.add("resume", fileJsonObj2);
-		
 		
 		// add properties that need to be sent back to datatables
 		jsonObj.addProperty("draw", draw);

@@ -1,10 +1,18 @@
+/*
+* Filename: clienttable.js
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+* 
+* This is a jquery plug-in tables from dataTables
+* 
+*/
 $(document).ready( function () {
 	
 	//EDITOR
 	var editor = new $.fn.dataTable.Editor( {
 		ajax: {
 	        create: {
-//	            type: 'POST',
 	            url: '/perscholasCaseStudy/CreateClientServlet'
 	        },
 	        edit: {
@@ -12,7 +20,6 @@ $(document).ready( function () {
 	            url: '/perscholasCaseStudy/UpdateClientServlet'
 	        },
 	        remove: {
-//	            type: 'DELETE',
 	            url: '/perscholasCaseStudy/DeleteClientServlet'
 	        }
 	    },
@@ -22,6 +29,19 @@ $(document).ready( function () {
 	    fields: [
 	        { label: 'Company', name: 'clientName' },
 	        { label: 'Position',  name: 'position'  },
+	        {
+                label: "Job Description",
+                name: "role.roleId",
+                type: "upload",
+                ajax: {
+                	type: 'POST',
+                	url: "/perscholasCaseStudy/UploadJobRoleServlet"
+                },
+                display: function ( id ) {
+                    return editor.file('role', id).fileName;
+                },
+                clearText: "Remove File"
+            }
 	    ]
 	} );
 	
@@ -69,6 +89,16 @@ $('#clientTable').DataTable({
 		columns: [
 			{ "data": "clientName" },
             { "data": "position" },
+            {
+                "data": "role.roleId",
+                render: function ( id ) {
+                	
+                    return id ?
+                            '<a href="/perscholasCaseStudy/DownloadJobRoleServlet?id='+id+'">'+editor.file( 'role', id ).fileName +'</a>' :
+                            null;
+                },
+                defaultContent: "No Role Des"
+            },
             {
                 className: "center",
                 defaultContent: '<a href="" class="editor_edit">Edit</a> / <a href="" class="editor_remove">Delete</a>'

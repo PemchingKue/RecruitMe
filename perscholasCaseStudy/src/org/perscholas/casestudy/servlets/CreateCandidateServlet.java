@@ -1,3 +1,9 @@
+/*
+* Filename: CreateCandidateServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -38,12 +44,13 @@ public class CreateCandidateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//Get session, and user ID
+		// Get session, and user ID
 		HttpSession session = request.getSession();
 		int sessionUserId = (int) session.getAttribute("id");
 		
 		PrintWriter out = response.getWriter();
 		
+		// store all parameters sent from the plugin into variables
 		String firstName = request.getParameter("data[firstName]").toLowerCase();
 		String lastName = request.getParameter("data[lastName]").toLowerCase();
 		String company = request.getParameter("data[client][clientName]").toLowerCase();
@@ -51,23 +58,24 @@ public class CreateCandidateServlet extends HttpServlet {
 		String email = request.getParameter("data[email]");
 		String phone = request.getParameter("data[phone]");
 		Integer resumeId = null;
-		//check if resumeId empty or not
+		
+		// check if resumeId empty or not
 		if(request.getParameter("data[resume][resumeId]").compareTo("") == 0) {
 			resumeId = null;
 		}else {
 			resumeId = Integer.parseInt(request.getParameter("data[resume][resumeId]"));
 		}
 		
-		
 		CandidateServices cs = new CandidateServices();
 		
+		// create new array list and invoke createData from service class, the add the contents of the return array list into a new array list
 		List<Candidate> data = new ArrayList<Candidate>();
 		data.addAll(cs.createData(firstName, lastName, email, phone, sessionUserId, company, position, resumeId));
 
 		Gson gson = new Gson();
 		JsonObject jsonObj = new JsonObject();
 			
-		// convert arraylist to json array
+		// convert array list to json array
 		JsonArray jsonArray = gson.toJsonTree(data).getAsJsonArray();
 		jsonObj.add("data", jsonArray);
 

@@ -1,3 +1,9 @@
+/*
+* Filename: UpdateCandidateServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -16,6 +22,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.perscholas.casestudy.customexceptions.DeleteFailedException;
+import org.perscholas.casestudy.customexceptions.UpdateFailedException;
 import org.perscholas.casestudy.entities.Candidate;
 import org.perscholas.casestudy.entities.CandidateServices;
 
@@ -38,6 +46,7 @@ public class UpdateCandidateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		// get session and store session ID into variable
 		HttpSession session = request.getSession();
 		int sessionUserId = (int) session.getAttribute("id");
 		
@@ -52,24 +61,29 @@ public class UpdateCandidateServlet extends HttpServlet {
 		String email = request.getParameter("data[email]");
 		String phone = request.getParameter("data[phone]");
 		Integer resumeId = null;
-		//check if resumeId empty or not
+		
+		// check if resumeId empty or not
 		if(request.getParameter("data[resume][resumeId]").compareTo("") == 0) {
 			resumeId = null;
 		}else {
 			resumeId = Integer.parseInt(request.getParameter("data[resume][resumeId]"));
 		}
 		
-		// retreive all data from database then store in List
+		// retrieve all data from database then store in List
 		CandidateServices cs = new CandidateServices();
 
 		List<Candidate> data = new ArrayList<Candidate>();
-		data = cs.updateData(cId, firstName, lastName, company, position, email, phone, sessionUserId, resumeId);
+		try {
+			data = cs.updateData(cId, firstName, lastName, company, position, email, phone, sessionUserId, resumeId);
+		} catch (UpdateFailedException | DeleteFailedException e) {
+			e.printStackTrace();
+		}
 
 		
 		Gson gson = new Gson();
 		JsonObject jsonObj = new JsonObject();
 			
-		// convert arraylist to json array
+		// convert array list to json array
 		JsonArray jsonArray = gson.toJsonTree(data).getAsJsonArray();
 		jsonObj.add("data", jsonArray);
 

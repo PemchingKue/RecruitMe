@@ -1,7 +1,13 @@
+/*
+* Filename: UpdateUserServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.perscholas.casestudy.entities.Recruiter;
+import org.perscholas.casestudy.customexceptions.UpdateFailedException;
 import org.perscholas.casestudy.entities.RecruiterServices;
+import org.perscholas.casestudy.logger.RecruitMeLogger;
 
 /**
  * Servlet implementation class UpdateUserServlet
@@ -25,7 +32,6 @@ public class UpdateUserServlet extends HttpServlet {
      */
     public UpdateUserServlet() {
         super();
-        
     }
 
 	/**
@@ -33,9 +39,14 @@ public class UpdateUserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		// logger
+		RecruitMeLogger rmLog = new RecruitMeLogger();
+		
+		// get session ID and store into variable
 		HttpSession session = request.getSession();
 		int userId = (int) session.getAttribute("id");
 		
+		// store parameters sent from form into variables
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
@@ -44,17 +55,22 @@ public class UpdateUserServlet extends HttpServlet {
 		
         RecruiterServices rs = new RecruiterServices();
         
-        successful = rs.updateData(userId, firstName, lastName, email);
+        // update data in data base
+        try {
+			successful = rs.updateData(userId, firstName, lastName, email);
+		} catch (UpdateFailedException e) {
+			e.printStackTrace();
+		}
         
+        // if successful, update session attributes
         if(successful) {
-        	System.out.println("success!");
         	session.setAttribute("firstName", firstName);
         	session.setAttribute("lastName", lastName);
         	session.setAttribute("email", email);
         	
         	response.sendRedirect(request.getContextPath() + "/jsp/settings.jsp");
         }else {
-        	System.out.println("failed!");
+        	rmLog.logger.log(Level.WARNING, "Failed to update user information");
         }
 	}
 

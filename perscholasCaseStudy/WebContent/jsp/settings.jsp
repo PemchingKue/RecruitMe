@@ -1,3 +1,9 @@
+<!--
+* Filename: settings.jsp
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+-->
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
     
@@ -35,6 +41,10 @@
   <script src="${root}/vendor/postitall/jquery.minicolors.js"></script>
   <script src="${root}/vendor/postitall/jquery-ui-timepicker-addon.js"></script>
   
+  <!-- Jquery Validation -->
+  <script src="${root}/vendor/jquery-validation/jquery.validate.js"></script>
+  <script src="${root}/js/settingsvalidation.js"></script>
+  
 </head>
 <body>
 <!-- Page Wrapper -->
@@ -65,7 +75,7 @@
                 <div class="row">
                     <!-- left form column -->
                     <div class="col-md-6 col-sm-6 col-xs-12 personal-info">
-                      <form class="form-horizontal" action="${root}/UpdateUserServlet" method="POST">
+                      <form class="form-horizontal" id="infoform" action="${root}/UpdateUserServlet" method="POST">
                         <div class="form-group">
                           <label class="col-lg-3 control-label">First name:</label>
                           <div class="col-lg-8">
@@ -97,7 +107,7 @@
 
                     <!-- right form column -->
                     <div class="col-md-6 col-sm-6 col-xs-12 personal-info">
-                      <form class="form-horizontal" role="form" action="${root}/ChangePasswordServlet" method="POST">
+                      <form class="form-horizontal" id="passwordform" action="${root}/ChangePasswordServlet" method="POST">
                         <div class="form-group">
                           <label class="col-md-4 control-label">Old Password:</label>
                           <div class="col-lg-8">
@@ -107,7 +117,7 @@
                         <div class="form-group">
                           <label class="col-md-4 control-label">New Password:</label>
                           <div class="col-lg-8">
-                            <input class="form-control" type="password" name="newpassword">
+                            <input class="form-control" type="password" id="newpass" name="newpassword">
                           </div>
                         </div>
 						<div class="form-group">

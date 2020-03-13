@@ -1,3 +1,9 @@
+/*
+* Filename: CreateClientServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -40,24 +46,34 @@ public class CreateClientServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//Get session, and user ID
+		// Get session, and user ID
 		HttpSession session = request.getSession();
 		int sessionUserId = (int) session.getAttribute("id");
 		
 		PrintWriter out = response.getWriter();
 		
+		// store all parameters sent from the plugin into variables
 		String clientName = request.getParameter("data[clientName]").toLowerCase();
 		String position = request.getParameter("data[position]").toLowerCase();
+		Integer roleId = null;
+		
+		// check if roleId empty or not
+		if(request.getParameter("data[role][roleId]").compareTo("") == 0) {
+			roleId = null;
+		}else {
+			roleId = Integer.parseInt(request.getParameter("data[role][roleId]"));
+		}
 		
 		ClientServices cs = new ClientServices();
 		
+		// create new array list and invoke createData from service class, the add the contents of the return array list into a new array list
 		List<Client> data = new ArrayList<Client>();
-		data.addAll(cs.createData(clientName, position, sessionUserId));
+		data.addAll(cs.createData(clientName, position, sessionUserId, roleId));
 
 		Gson gson = new Gson();
 		JsonObject jsonObj = new JsonObject();
 			
-		// convert arraylist to json array
+		// convert array list to json array
 		JsonArray jsonArray = gson.toJsonTree(data).getAsJsonArray();
 		jsonObj.add("data", jsonArray);
 

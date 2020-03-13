@@ -1,3 +1,9 @@
+<!--
+* Filename: logoutmodal.jsp
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+-->
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 
@@ -9,7 +15,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title">Ready to Leave?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>

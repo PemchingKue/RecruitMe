@@ -1,3 +1,9 @@
+/*
+* Filename: DownloadResumeServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
@@ -32,13 +38,15 @@ public class DownloadResumeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		// store parameter sent from plugin into variable
 		Integer id = Integer.parseInt(request.getParameter("id"));
-		//System.out.println("THIS IS THE ID OF THE RESUME: " + id);
 		
 		ResumeServices rs = new ResumeServices();
+		
+		// retrieve job role description by ID
 		List<Resume> getResume = rs.getResumeById(id);
 		
-        // Setting The Content Attributes For The Response Object
+		// setting the content attributes for the response object
 		String mimeType = getResume.get(0).getContentType();
 		
 		if(mimeType == null) {
@@ -48,12 +56,12 @@ public class DownloadResumeServlet extends HttpServlet {
 			response.setContentType(mimeType);
 		}
 
-        //Setting The Headers For The Response Object
+		// setting the headers for the response object
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"", getResume.get(0).getFileName());
         response.setHeader(headerKey, headerValue);
 		
-        //Output the byte[] to the response object
+        // output the byte[] to the response object
         OutputStream outStream = response.getOutputStream();
         
         byte[] buffer = getResume.get(0).getResumeData();

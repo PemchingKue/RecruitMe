@@ -1,4 +1,4 @@
-const SERVER_URL = "../dist/noteController.php";
+const SERVER_URL = "/perscholasCaseStudy/NotesController";
 
 var guid = function() {
   function s4() {
@@ -59,7 +59,7 @@ var getJsonRequest = function(params, callback) {
                 if(callback != null) callback(null);
             }
         },
-        type: 'POST'
+        type: 'GET'
     });
 
 };

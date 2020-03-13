@@ -1,9 +1,17 @@
+/*
+* Filename: LoginServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.logging.Level;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,12 +21,14 @@ import javax.servlet.http.HttpSession;
 
 import org.perscholas.casestudy.entities.Recruiter;
 import org.perscholas.casestudy.entities.RecruiterServices;
+import org.perscholas.casestudy.interfaces.JspPages;
+import org.perscholas.casestudy.logger.RecruitMeLogger;
 
 /**
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet implements JspPages{
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -32,15 +42,22 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// logger
+		RecruitMeLogger rmLog = new RecruitMeLogger();
+		
 		PrintWriter out = response.getWriter();
 		
+		// store parameters sent from form into variables
         String email = request.getParameter("email").toLowerCase();  
         String password = request.getParameter("password");
         
         RecruiterServices rs = new RecruiterServices();
         
+        // get recruiter by email
         List<Recruiter> recruiter = rs.fetchRecruiterByEmail(email);
         
+        // check if the recruiter exists
         if(!recruiter.isEmpty()) { 
         	
 			if ( email.equals(recruiter.get(0).getEmail()) && password.equals(recruiter.get(0).getPassword())) {
@@ -50,19 +67,25 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("firstName", recruiter.get(0).getFirstName());
 				session.setAttribute("lastName", recruiter.get(0).getLastName());
 				
-				response.sendRedirect(request.getContextPath() + "/jsp/dashboard.jsp");
-				
-//				RequestDispatcher rd = request.getRequestDispatcher("/jsp/dashboard.jsp");
-//				rd.forward(request, response);
+				response.sendRedirect(request.getContextPath() + DASHBOARD);
 				
 			} else {
-				out.print("Sorry, username or password error!");
-//				RequestDispatcher rd = request.getRequestDispatcher("/jsp/login.jsp");
-//				rd.forward(request, response);
+				rmLog.logger.log(Level.WARNING, "Incorrect username or password");
+				String badUserOrPass = "Incorrect username or password!";
+				RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
+				request.setAttribute("error", badUserOrPass);
+				
+				rd.forward(request, response);
 			}
         	
         } else {
         	out.println("User does not exist!");
+			rmLog.logger.log(Level.WARNING, "User does not exist");
+			String badUser = "User does not exist!";
+			RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
+			request.setAttribute("error", badUser);
+			
+			rd.forward(request, response);
         }
         
 	}

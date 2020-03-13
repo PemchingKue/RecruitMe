@@ -1,3 +1,9 @@
+/*
+* Filename: Recruiter.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.entities;
 
 import java.io.Serializable;
@@ -9,38 +15,42 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "recruiter")
-@NamedQueries({
-	@NamedQuery(query = "SELECT r FROM Recruiter r", name="getAllRecruiters"),
-	@NamedQuery(query = "SELECT r FROM Recruiter r WHERE r.recruiterId = :rid", name="getById")
-})
+@NamedQueries({ @NamedQuery(query = "SELECT r FROM Recruiter r", name = "getAllRecruiters"),
+		@NamedQuery(query = "SELECT r FROM Recruiter r WHERE r.recruiterId = :rid", name = "getById") })
 public class Recruiter implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="recruiter_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "recruiter_id")
 	private int recruiterId;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	private String email;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="first_name")
+
+	@Column(name = "first_name")
 	private String firstName;
-	
-	@Column(name="last_name")
+
+	@Column(name = "last_name")
 	private String lastName;
-	
+
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param email
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 */
 	public Recruiter(String email, String password, String firstName, String lastName) {
 		this.setEmail(email);
 		this.setPassword(password);
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 	}
-	
+
 	public Recruiter() {
 		super();
 	}
@@ -115,6 +125,11 @@ public class Recruiter implements Serializable {
 		this.lastName = lastName;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -127,6 +142,11 @@ public class Recruiter implements Serializable {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -177,5 +197,5 @@ public class Recruiter implements Serializable {
 		builder.append("]");
 		return builder.toString();
 	}
-   
+
 }

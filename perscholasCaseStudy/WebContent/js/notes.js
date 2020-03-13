@@ -1,5 +1,14 @@
-//cookie function
+/*
+* Filename: notes.js
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+* 
+* This is cookie implementation for the static note on the dashboard page
+* 
+*/
 
+//cookie function
 function createCookie(name, value, days) {
     var expires = '';
     var date = new Date();

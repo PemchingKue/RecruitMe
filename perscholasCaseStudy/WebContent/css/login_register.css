@@ -1,3 +1,9 @@
+/*
+* Filename: login_register.css
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 html, body {
     background-image: url("../img/login.jpeg");
     background-size: cover;
@@ -55,4 +61,30 @@ input:focus {
 
 .rotate-n-15 {
     transform: rotate(-15deg);
+}
+
+#loginerror {
+	display:block;
+	position: absolute;
+	margin-top: 38px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+    color: red;
+    text-align: center;
+    flex-basis: 100%;
+}
+
+#registererror {
+	display:block;
+	position: absolute;
+	margin-top: 38px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+    color: red;
+    text-align: center;
+    flex-basis: 100%;
 }

@@ -1,15 +1,19 @@
+/*
+* Filename: UploadResumeServlet.java
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+*/
 package org.perscholas.casestudy.servlets;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,15 +24,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import javax.sql.rowset.serial.SerialException;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.perscholas.casestudy.entities.Resume;
 import org.perscholas.casestudy.entities.ResumeServices;
+import org.perscholas.casestudy.logger.RecruitMeLogger;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -52,8 +52,12 @@ public class UploadResumeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		// logger
+		RecruitMeLogger rmLog = new RecruitMeLogger();
+		
 		PrintWriter out = response.getWriter();
 		
+		// define variables and array lists
 		List<Resume> rList = new ArrayList<Resume>();
 		InputStream inputStream = null;
 		String fileName = null;
@@ -68,12 +72,12 @@ public class UploadResumeServlet extends HttpServlet {
     			
                 
     			if(part.getName().compareTo("upload") == 0) {
-    				// prints out some information for debugging
-    	            System.out.println(part.getName());
-    	            System.out.println(part.getSize());
-    	            System.out.println(part.getContentType());
-    	            
-    	            //get file size and content type
+    				// log some information for debugging
+    				rmLog.logger.log(Level.INFO, "File: " + part.getName());
+    				rmLog.logger.log(Level.INFO, "File: " + part.getSize());
+    				rmLog.logger.log(Level.INFO, "File: " + part.getContentType());
+
+    	            // get file size and content type
     	            fileSize = part.getSize();
     	            contentType = part.getContentType();
     			}
@@ -85,6 +89,7 @@ public class UploadResumeServlet extends HttpServlet {
         
         ResumeServices rs = new ResumeServices();
         
+        // upload data to data base
         try {
 			rList = rs.uploadData(inputStream, fileName, fileSize, contentType);
 		} catch (SerialException e) {
@@ -93,17 +98,15 @@ public class UploadResumeServlet extends HttpServlet {
 			e.printStackTrace();
 		}
         
+        // define necessary json objects
 		Gson gson = new Gson();
 		JsonObject jsonObj = new JsonObject();
 		JsonObject uploadIdObj = new JsonObject();
 		JsonObject uploadFileObj = new JsonObject();
 		JsonObject fileJsonObj2 = new JsonObject();
 		
-		//create the file ID in json object
+		// create the file ID in json object
 		uploadIdObj.addProperty("id", rList.get(0).getResumeId());
-		
-		// convert arraylist to json array, then store in json object
-		//JsonArray jsonFileArray = gson.toJsonTree(rList).getAsJsonArray();
 	
 		for(Resume r : rList) {
 			String id = Integer.toString(r.getResumeId());
@@ -113,13 +116,12 @@ public class UploadResumeServlet extends HttpServlet {
 		
 		uploadFileObj.add("resume", fileJsonObj2);
 		
-		//Create required json format for datatables plugin 
+		// Create required json format for datatables plugin 
 		jsonObj.add("files", uploadFileObj);
 		jsonObj.add("upload", uploadIdObj);
 		
 		out.println(jsonObj.toString());
 		
-
 	}
 
 	/**

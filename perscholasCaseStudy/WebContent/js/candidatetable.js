@@ -1,3 +1,12 @@
+/*
+* Filename: candidatetable.js
+* Author: Pemching Kue
+* 03/13/2020 
+* Modified by: Pemching Kue
+* 
+* This is a jquery plug-in tables from dataTables
+* 
+*/
 $(document).ready( function () {
 
 	//EDITOR
